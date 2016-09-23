@@ -10,7 +10,12 @@
 <script src="MaskIt.js"></script>
 <script>
     // examples
-    MaskIt('00/00/000A', '#date');
+    MaskIt('00/00/0000', '#date', {
+        onKeyupHandler: function (element, value) {
+            element.value = value;
+        }
+    });
+
     MaskIt('00:00:00', '#time');
 </script>
 </body>
