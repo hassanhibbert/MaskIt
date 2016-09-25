@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>MaskIt - A JS Masking Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <h2>MaskIt - Demo</h2>
+    <input type="text" class="date" placeholder="Enter Today's Date"/>
+    <input type="text" class="date" placeholder="Enter Date of Birth"/>
+    <input type="text" id="time" placeholder="Enter Time"/>
+    <input type="text" id="phone" placeholder="Enter Phone Number"/>
+</div>
+
+<script src="maskit.min.js"></script>
+<script>
+    MaskIt('00/00/0000', '.date');
+    MaskIt('00:00:00', '#time');
+    MaskIt('(000) 000-0000', '#phone');
+</script>
+</body>
+</html>
