@@ -1,6 +1,6 @@
 # MaskIt
 
-A javaScript tool to apply a predefined mask to an input field.
+A JavaScript tool to apply a predefined mask to an input field.
 
 ## Demo & Examples
 
