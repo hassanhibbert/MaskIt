@@ -1,0 +1,31 @@
+body {
+    font-family: 'Fjalla One', sans-serif;
+}
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.wrapper {
+    max-width: 500px;
+    padding: 20px;
+    background: #f2f2f2;
+    border: 1px solid #ccc;
+    margin: 30px auto;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.wrapper h2 {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
