@@ -87,14 +87,14 @@
         }
       }
 
-      // On complete callback
-      if (isFunction(this.options.onComplete) && value.length === maskPattern.length) {
-        this.options.onComplete.call(null, this.maskValue);
-      }
-
       // Prevents user from typing more than the mask length
       if (value.length <= maskPattern.length) {
         this.maskValue = value.join('');
+      }
+
+      // On complete callback
+      if (isFunction(this.options.onComplete) && value.length === maskPattern.length) {
+        this.options.onComplete.call(null, this.maskValue);
       }
 
       // Return masked value
