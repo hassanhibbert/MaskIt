@@ -35,7 +35,7 @@ MaskIt('00/00/0000', '#date');
 Using callbacks
 
 ```javascript
-MaskIt('00:00:0000', '#time', {
+MaskIt('00:00:00', '#time', {
 
   onInvalidHandler: function(errorMessage, incorrectValue, maskPattern) {
     console.log(errorMessage);
@@ -65,7 +65,7 @@ Using the mask method
 
 ```javascript
 MaskIt('00/00/0000').mask('05231995'); // 05/23/1995
-MaskIt('(000) 000-0000').mask(4075555555); // (407) 555-5555
+MaskIt('(000) 000-0000').mask('4075555555'); // (407) 555-5555
 ```
 
 ##Compatibility
