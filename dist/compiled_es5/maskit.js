@@ -2,6 +2,13 @@
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+/*
+ * MaskIt: A JavaScript masking tool
+ * By Hassan Hibbert <http://hassanhibbert.com/>
+ * Copyright 2016 Hassan Hibbert, under the MIT License
+ * <https://opensource.org/licenses/mit-license.php/>
+ */
+
 (function (global) {
   'use strict';
 
@@ -33,7 +40,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       onInvalidHandler: null,
       onInputHandler: null,
       onComplete: null,
-      showError: false,
       maskDefinitions: null
     };
 
@@ -77,11 +83,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           // Remove the last item which caused the error
           value.pop();
 
-          // Display error messages or use 'onInvalidHandler' option to handle messages
+          // Error handling option
           if (isFunction(this.options.onInvalidHandler)) {
-            this.options.onInvalidHandler.call(null, message);
-          } else if (this.options.showError) {
-            console.error(message);
+            this.options.onInvalidHandler.call(null, message, value[index], maskDefinition[maskItem].pattern);
           }
         }
       }
@@ -100,7 +104,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return this.maskValue;
     },
 
-    destroyEvents: function removeEvents() {
+    destroyEvents: function destroyEvents() {
       removeListeners.call(this);
     }
   };
