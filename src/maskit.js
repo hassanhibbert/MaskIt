@@ -1,3 +1,10 @@
+/*
+ * MaskIt: A JavaScript masking tool
+ * By Hassan Hibbert <http://hassanhibbert.com/>
+ * Copyright 2016 Hassan Hibbert, under the MIT License
+ * <https://opensource.org/licenses/mit-license.php/>
+ */
+
 (function (global) {
   'use strict';
 
@@ -28,7 +35,6 @@
       onInvalidHandler: null,
       onInputHandler: null,
       onComplete: null,
-      showError: false,
       maskDefinitions: null
     };
 
@@ -73,12 +79,11 @@
           // Remove the last item which caused the error
           value.pop();
 
-          // Display error messages or use 'onInvalidHandler' option to handle messages
+          // Error handling option
           if (isFunction(this.options.onInvalidHandler)) {
-            this.options.onInvalidHandler.call(null, message);
-          } else if (this.options.showError) {
-            console.error(message);
+            this.options.onInvalidHandler.call(null, message, value[index], maskDefinition[maskItem].pattern);
           }
+
         }
       }
 
@@ -96,7 +101,7 @@
       return this.maskValue;
     },
 
-    destroyEvents: function removeEvents() {
+    destroyEvents: function destroyEvents() {
       removeListeners.call(this);
     }
   };
