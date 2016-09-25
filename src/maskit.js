@@ -20,13 +20,14 @@
 
     this.maskDefinitions = {
       '0': { pattern: /\d/ },
-      '9': { pattern: /\d/, optional: true },
-      'A': { pattern: /[a-zA-Z]/ }
+      'A': { pattern: /[a-zA-Z]/ },
+      'Z': { pattern: /[a-zA-Z0-9]/ }
     };
 
     defaults = {
       onInvalidHandler: null,
       onInputHandler: null,
+      onComplete: null,
       showError: false,
       maskDefinitions: null
     };
@@ -79,6 +80,11 @@
             console.error(message);
           }
         }
+      }
+
+      // On complete callback
+      if (isFunction(this.options.onComplete) && value.length === maskPattern.length) {
+        this.options.onComplete.call(null, this.maskValue);
       }
 
       // Prevents user from typing more than the mask length

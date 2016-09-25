@@ -18,7 +18,11 @@
 
 <script src="maskit.min.js"></script>
 <script>
-    MaskIt('00/00/0000', '.date');
+    MaskIt('00/00/0000', '.date', {
+        onComplete: function(value) {
+            console.log('complete: ', value)
+        }
+    });
     MaskIt('00:00:00', '#time');
     MaskIt('(000) 000-0000', '#phone');
 </script>
