@@ -132,7 +132,7 @@
       this.options.onInputHandler.call(null, event.target, this.mask(event.target.value));
     } else {
       event.target.value = this.mask(event.target.value);
-      updateCaretPosition();
+      updateCaretPosition.call(this);
     }
   }
 
@@ -149,10 +149,11 @@
   }
 
   function caretPosition(selection) {
-    var diff, caretPos, initialPosition = selection.selectionStart;
+    var diff, caretPos, newPos, initialPosition = selection.selectionStart;
     return function () {
       diff = selection.value.length - initialPosition;
-      caretPos = diff === 1 ? initialPosition + diff : initialPosition ;
+      newPos = initialPosition + diff;
+      caretPos = (diff > 0 && newPos !== this.maskPattern.length) ? newPos : initialPosition;
       selection.setSelectionRange(caretPos, caretPos);
     };
   }
