@@ -21,8 +21,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     var _this = this,
         defaults;
 
-    this.maskValue = null;
-    this.maskPattern = maskPattern;
+    this.maskValue = '';
+    this.maskPattern = maskPattern.split('');
     this.maskElement = element && getElementList(element);
 
     this.events = {
@@ -59,9 +59,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
   MaskIt.prototype = {
     mask: function mask(value) {
-      value = value.split('');
+      value = getCleanValue.call(this, value).split('');
       var maskItem,
-          maskPattern = this.maskPattern.split(''),
+          maskPattern = this.maskPattern,
           maskDefinition = this.maskDefinitions,
           maskDefinitionKeys = Object.keys(maskDefinition),
           validDefinitionKeys,
@@ -75,18 +75,22 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
         if (validDefinitionKeys && index < value.length) {
 
-          // Update value with the custom delimiter
+          // add mask item
           !isItemDuplicate && value.splice(index, 0, maskItem);
-        } else if (index < value.length && !maskDefinition[maskItem].pattern.test(value[index])) {
+        } else if (value[index] && maskDefinition[maskItem] && !maskDefinition[maskItem].pattern.test(value[index])) {
           message = 'The character ' + value[index] + ' does not match this pattern: ' + maskDefinition[maskItem].pattern;
 
-          // Remove the last item which caused the error
-          value.pop();
+          // Remove the item that caused the error
+          value.splice(index, 1);
 
           // Error handling option
           if (isFunction(this.options.onInvalidHandler)) {
             this.options.onInvalidHandler.call(null, message, value[index], maskDefinition[maskItem].pattern);
           }
+        } else if (index <= value.length && validDefinitionKeys && value.length > this.maskValue.length) {
+
+          // add mask item
+          !isItemDuplicate && value.splice(index, 0, maskItem);
         }
       }
 
@@ -125,12 +129,37 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
   function _onInputHandler(event) {
     event.preventDefault();
+    var updateCaretPosition = caretPosition(event.target);
 
     if (this.options.onInputHandler) {
-      this.options.onInputHandler(event.target, this.mask(event.target.value));
+      this.options.onInputHandler.call(null, event.target, this.mask(event.target.value));
     } else {
       event.target.value = this.mask(event.target.value);
+      updateCaretPosition();
     }
+  }
+
+  function getCleanValue(value) {
+    var cleanValue;
+    for (var i = 0, length = this.maskPattern.length; i < length; i++) {
+      if (Object.keys(this.maskDefinitions).indexOf(this.maskPattern[i]) < 0) {
+        if (value.indexOf(this.maskPattern[i]) >= 0) {
+          cleanValue = value.split(this.maskPattern[i]).join('');
+        }
+      }
+    }
+    return cleanValue ? cleanValue : value;
+  }
+
+  function caretPosition(selection) {
+    var diff,
+        caretPos,
+        initialPosition = selection.selectionStart;
+    return function () {
+      diff = selection.value.length - initialPosition;
+      caretPos = diff === 1 ? initialPosition + diff : initialPosition;
+      selection.setSelectionRange(caretPos, caretPos);
+    };
   }
 
   // utils
