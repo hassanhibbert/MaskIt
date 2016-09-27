@@ -39,6 +39,15 @@ var dateInput = document.querySelector('#date');
 MaskIt('00/00/0000', dateInput);
 ```
 
+Using different listeners. Default: `maskOnInput = true`
+
+```javascript
+MaskIt('(000) 000-0000', '#phone', {
+  maskOnChange: true,
+  maskOnInput: false
+});
+```
+
 Using callbacks
 
 ```javascript
@@ -52,6 +61,10 @@ MaskIt('00:00:00', '#time', {
   onInputHandler: function(element, maskedValue) {
     console.log('Input changed: ', element, ' Masked value: ', maskedValue);
   },
+  
+  onChangeHandler: function(element, maskedValue) {
+    console.log('Change event: ', maskedValue);
+  }
   
   onComplete: function(maskedValue) {
     console.log('Complete! ', maskedValue);
