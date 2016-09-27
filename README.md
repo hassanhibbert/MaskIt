@@ -32,6 +32,13 @@ Basic usage
 MaskIt('00/00/0000', '#date');
 ```
 
+Passing an html element instead of selector
+
+```javascript
+var dateInput = document.querySelector('#date');
+MaskIt('00/00/0000', dateInput);
+```
+
 Using callbacks
 
 ```javascript
@@ -66,6 +73,22 @@ Using the mask method
 ```javascript
 MaskIt('00/00/0000').mask('05231995'); // 05/23/1995
 MaskIt('(000) 000-0000').mask('4075555555'); // (407) 555-5555
+```
+
+Using your own mask definition
+
+```javascript
+MaskIt('$$/$$/$$$$', '#date', {
+  maskDefinitions = {
+    '$': { pattern: /\d/ } 
+  }
+})
+```
+
+Combine different mask definitions
+
+```javascript
+MaskIt('AAA-000-AAA-00', '#mixed-pattern'); // abc-123-efg-45
 ```
 
 ##Compatibility
