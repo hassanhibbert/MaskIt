@@ -37,8 +37,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     };
 
     defaults = {
+      maskOnInput: true,
+      maskOnChange: false,
       onInvalidHandler: null,
       onInputHandler: null,
+      onChangeHandler: null,
       onComplete: null,
       maskDefinitions: null
     };
@@ -114,17 +117,23 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   };
 
   function removeListeners() {
-    setListeners(this.maskElement, 'change', this.events.onChangeHandler, false);
-    setListeners(this.maskElement, 'input', this.events.onInputHandler, false);
+    this.options.maskOnChange && setListeners(this.maskElement, 'change', this.events.onChangeHandler, false);
+    this.options.maskOnInput && setListeners(this.maskElement, 'input', this.events.onInputHandler, false);
   }
 
   function initializeEvents() {
-    setListeners(this.maskElement, 'change', this.events.onChangeHandler, true);
-    setListeners(this.maskElement, 'input', this.events.onInputHandler, true);
+    this.options.maskOnChange && setListeners(this.maskElement, 'change', this.events.onChangeHandler, true);
+    this.options.maskOnInput && setListeners(this.maskElement, 'input', this.events.onInputHandler, true);
   }
 
   function _onChangeHandler(event) {
-    event.target.value = this.mask(event.target.value);
+    event.preventDefault();
+
+    if (this.options.onChangeHandler) {
+      this.options.onChangeHandler.call(null, event.target, this.mask(event.target.value));
+    } else {
+      event.target.value = this.mask(event.target.value);
+    }
   }
 
   function _onInputHandler(event) {
@@ -154,7 +163,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   function caretPosition(selection) {
     var pos = 0,
         selectStart = selection.selectionStart;
-    if (selectStart || selectStart === '') {
+    if (selectStart || selectStart === 0) {
       pos = selectStart + 1;
     }
     return function () {
