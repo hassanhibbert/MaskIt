@@ -64,7 +64,7 @@ MaskIt('00:00:00', '#time', {
   
   onChangeHandler: function(element, maskedValue) {
     console.log('Change event: ', maskedValue);
-  }
+  },
   
   onComplete: function(maskedValue) {
     console.log('Complete! ', maskedValue);
