@@ -152,15 +152,14 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   }
 
   function caretPosition(selection) {
-    var diff,
-        caretPos,
-        newPos,
-        initialPosition = selection.selectionStart;
+    var pos = 0,
+        selectStart = selection.selectionStart;
+    if (selectStart || selectStart === '') {
+      pos = selectStart + 1;
+    }
     return function () {
-      diff = selection.value.length - initialPosition;
-      newPos = initialPosition + diff;
-      caretPos = diff > 0 && newPos !== this.maskPattern.length ? newPos : initialPosition;
-      selection.setSelectionRange(caretPos, caretPos);
+      selection.focus();
+      selection.setSelectionRange(pos, pos);
     };
   }
 
