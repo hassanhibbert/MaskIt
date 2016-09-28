@@ -19,6 +19,7 @@
     this.maskValue = '';
     this.maskPattern = maskPattern.split('');
     this.maskElement = element && getElementList(element);
+    this.caretState = new Array(3);
 
     this.events = {
       onChangeHandler: _onChangeHandler.bind(_this),
@@ -136,7 +137,7 @@
 
   function _onInputHandler(event) {
     event.preventDefault();
-    var updateCaretPosition = caretPosition(event.target);
+    var updateCaretPosition = caretPosition.call(this, event.target);
 
     if (this.options.onInputHandler) {
       this.options.onInputHandler.call(null, event.target, this.mask(event.target.value));
@@ -157,9 +158,9 @@
     return  value;
   }
 
-  var caretState = new Array(3);
+
   function caretPosition(selection) {
-    var pos = 0, selectStart = selection.selectionStart;
+    var pos = 0, selectStart = selection.selectionStart, caretState = this.caretState;
     if (selectStart || selectStart === 0) {
       pos = selectStart;
     }
