@@ -24,6 +24,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     this.maskValue = '';
     this.maskPattern = maskPattern.split('');
     this.maskElement = element && getElementList(element);
+    this.caretState = new Array(3);
 
     this.events = {
       onChangeHandler: _onChangeHandler.bind(_this),
@@ -138,7 +139,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
   function _onInputHandler(event) {
     event.preventDefault();
-    var updateCaretPosition = caretPosition(event.target);
+    var updateCaretPosition = caretPosition.call(this, event.target);
 
     if (this.options.onInputHandler) {
       this.options.onInputHandler.call(null, event.target, this.mask(event.target.value));
@@ -149,26 +150,35 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   }
 
   function getCleanValue(value) {
-    var cleanValue;
     for (var i = 0, length = this.maskPattern.length; i < length; i++) {
       if (Object.keys(this.maskDefinitions).indexOf(this.maskPattern[i]) < 0) {
         if (value.indexOf(this.maskPattern[i]) >= 0) {
-          cleanValue = value.split(this.maskPattern[i]).join('');
+          value = value.replace(this.maskPattern[i], '');
         }
       }
     }
-    return cleanValue ? cleanValue : value;
+    return value;
   }
 
   function caretPosition(selection) {
     var pos = 0,
-        selectStart = selection.selectionStart;
+        selectStart = selection.selectionStart,
+        caretState = this.caretState;
     if (selectStart || selectStart === 0) {
-      pos = selectStart + 1;
+      pos = selectStart;
     }
     return function () {
+      caretState.length >= 3 && caretState.splice(0, 1);
+      caretState.push(selection.value.length);
       selection.focus();
-      selection.setSelectionRange(pos, pos);
+
+      if (caretState[0] > caretState[1] && caretState[2] > caretState[1]) {
+        selection.setSelectionRange(pos, pos);
+      } else if (caretState[1] >= caretState[2]) {
+        selection.setSelectionRange(pos, pos);
+      } else if (caretState[1] < caretState[2]) {
+        selection.setSelectionRange(pos + 1, pos + 1);
+      }
     };
   }
 
