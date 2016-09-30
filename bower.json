@@ -1,0 +1,26 @@
+{
+  "name": "mask-it",
+  "description": "A javascript masking tool",
+  "main": "MaskIt.js",
+  "authors": [
+    "Hassan Hibbert <hassanhibbert@yahoo.com> (http://hassanhibbert.com)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "JavaScript",
+    "Mask",
+    "Masking"
+  ],
+  "homepage": "https://github.com/hassanhibbert/MaskIt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hassanhibbert/MaskIt.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

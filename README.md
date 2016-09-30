@@ -8,6 +8,10 @@ A JavaScript tool to apply a predefined mask to an input field.
 
 http://hassanhibbert.github.io/maskit/
 
+## Installation
+
+You can download this script by using bower and running this command: `bower install mask-it --save`
+
 ## Setup 
 
 Load the script in your page
