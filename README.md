@@ -10,7 +10,7 @@ http://hassanhibbert.github.io/maskit/
 
 ## Installation
 
-You can download this script by using bower and running this command: `bower install mask-it --save`
+You can download MaskIt with bower and running: `bower install mask-it --save`
 
 ## Setup 
 
