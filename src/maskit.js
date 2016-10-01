@@ -8,17 +8,17 @@
 (function (global) {
   'use strict';
 
-  function MaskIt(maskPattern, element, options) {
+  function MaskIt(maskPattern, ...options) {
 
     if (!(this instanceof MaskIt)) {
-      return new MaskIt(maskPattern, element, options);
+      return new MaskIt(maskPattern, ...options);
     }
 
     var _this = this, defaults;
 
     this.maskValue = '';
     this.maskPattern = maskPattern.split('');
-    this.maskElement = element && getElementList(element);
+    this.maskElement = !isObject(options[0]) && getElementList(options[0]);
     this.caretState = new Array(3);
 
     this.events = {
@@ -42,7 +42,7 @@
       maskDefinitions: null
     };
 
-    this.options = isObject(options) ? extend(defaults, options) : defaults;
+    this.options = isObject(options[1] || options[0]) ? extend(defaults, options[1] || options[0]) : defaults;
 
     if (this.options.maskDefinitions) {
       extend(this.maskDefinitions, this.options.maskDefinitions);
@@ -58,55 +58,75 @@
 
   MaskIt.prototype = {
     mask: function mask(value) {
-      value = getCleanValue.call(this, value).split('');
-      var maskItem,
+
+      var valueParts = value.split(''),
           maskPattern = this.maskPattern,
           maskDefinition = this.maskDefinitions,
           maskDefinitionKeys = Object.keys(maskDefinition),
           validDefinitionKeys,
           isItemDuplicate,
+          removeCount,
+          valueLength,
+          maskValue,
+          maskItem,
           message;
 
       for (let index = 0, length = maskPattern.length; index < length; index += 1) {
+
         maskItem = maskPattern[index];
         validDefinitionKeys = maskDefinitionKeys.indexOf(maskItem) < 0;
-        isItemDuplicate = maskItem === value[index];
+        isItemDuplicate = maskItem === valueParts[index];
+        valueLength = valueParts.length;
 
-        if (validDefinitionKeys && index < value.length) {
+        if (maskItem && validDefinitionKeys && index < valueLength) {
 
           // add mask item
-          !isItemDuplicate && value.splice(index, 0, maskItem);
+          !isItemDuplicate && valueParts.splice(index, 0, maskItem);
 
-        } else if (value[index] && (maskDefinition[maskItem] && !maskDefinition[maskItem].pattern.test(value[index]))) {
-          message = `The character ${value[index]} does not match this pattern: ${maskDefinition[maskItem].pattern}`;
-
-          // Remove the item that caused the error
-          value.splice(index, 1);
+        } else if (valueParts[index] && (maskDefinition[maskItem] && !maskDefinition[maskItem].pattern.test(valueParts[index]))) {
+          message = `The character ${valueParts[index]} does not match this pattern: ${maskDefinition[maskItem].pattern}`;
 
           // Error handling option
           if (isFunction(this.options.onInvalidHandler)) {
-            this.options.onInvalidHandler.call(null, message, value[index], maskDefinition[maskItem].pattern);
+            this.options.onInvalidHandler.call(null, message, valueParts[index], maskDefinition[maskItem].pattern);
           }
 
-        } else if (index <= value.length && validDefinitionKeys && value.length > this.maskValue.length) {
+          // Remove the item that caused the error
+          valueParts.splice(index, 1);
+
+          // Decrement index by 1 since an item has been removed
+          index -= 1;
+
+        } else if (maskItem && index <= valueLength && validDefinitionKeys && valueLength > this.maskValue.length) {
 
           // add mask item
-          !isItemDuplicate && value.splice(index, 0, maskItem);
+          !isItemDuplicate && valueParts.splice(index, 0, maskItem);
         }
       }
 
-      // Prevents user from typing more than the mask length
-      if (value.length <= maskPattern.length) {
-        this.maskValue = value.join('');
-      }
+      maskValue = valueParts.join('');
 
       // On complete callback
-      if (isFunction(this.options.onComplete) && value.length === maskPattern.length) {
-        this.options.onComplete.call(null, this.maskValue);
+      if (isFunction(this.options.onComplete) && valueParts.length === maskPattern.length) {
+        this.options.onComplete.call(null, maskValue);
+      }
+
+      if (maskValue.length <= maskPattern.length) {
+
+        // Assign masked valueParts
+        this.maskValue = maskValue;
+
+      } else if (maskValue.length > maskPattern.length) {
+
+        // Remove extra characters
+        removeCount = maskValue.length - maskPattern.length;
+        valueParts.splice(maskPattern.length, removeCount);
+        this.maskValue = valueParts.join('');
       }
 
       // Return masked value
       return this.maskValue;
+
     },
 
     destroyEvents: function destroyEvents() {
@@ -146,18 +166,6 @@
       updateCaretPosition.call(this);
     }
   }
-
-  function getCleanValue(value) {
-    for (let i = 0, length = this.maskPattern.length; i < length; i++) {
-      if (Object.keys(this.maskDefinitions).indexOf(this.maskPattern[i]) < 0) {
-        if (value.indexOf(this.maskPattern[i]) >= 0) {
-          value = value.replace(this.maskPattern[i], '');
-        }
-      }
-    }
-    return  value;
-  }
-
 
   function caretPosition(selection) {
     var pos = 0, selectStart = selection.selectionStart, caretState = this.caretState;
