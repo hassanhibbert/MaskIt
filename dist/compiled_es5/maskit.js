@@ -27,7 +27,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     this.maskValue = '';
     this.maskPattern = maskPattern.split('');
     this.maskElement = !isObject(options[0]) && getElementList(options[0]);
-    this.caretState = new Array(3);
+    this.caretState = {};
 
     this.events = {
       onChangeHandler: _onChangeHandler.bind(_this),
@@ -59,6 +59,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     if (this.maskElement) {
       for (var i = 0, length = this.maskElement.length; i < length; i += 1) {
         this.maskElement[i].value = this.mask(this.maskElement[i].value);
+        this.caretState[i] = new Array(3);
       }
       initializeEvents.call(this);
     }
@@ -160,36 +161,41 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
   function _onInputHandler(event) {
     event.preventDefault();
-    var updateCaretPosition = caretPosition.call(this, event.target);
+
+    // Info before caret position is changed
+    var lengthBefore = this.maskValue.length,
+        caretPositionBefore = getCaretPosition(event.target),
+        lengthAfter,
+        caretPosition;
 
     if (this.options.onInputHandler) {
       this.options.onInputHandler.call(null, event.target, this.mask(event.target.value));
     } else {
       event.target.value = this.mask(event.target.value);
-      updateCaretPosition.call(this);
+
+      // Update caret position
+      lengthAfter = event.target.value.length;
+      caretPosition = lengthBefore < lengthAfter ? caretPositionBefore + 1 : caretPositionBefore;
+      setCaretPosition(event.target, caretPosition);
     }
   }
 
-  function caretPosition(selection) {
-    var pos = 0,
-        selectStart = selection.selectionStart,
-        caretState = this.caretState;
-    if (selectStart || selectStart === 0) {
-      pos = selectStart;
-    }
-    return function () {
-      caretState.length >= 3 && caretState.splice(0, 1);
-      caretState.push(selection.value.length);
-      selection.focus();
-
-      if (caretState[0] > caretState[1] && caretState[2] > caretState[1]) {
-        selection.setSelectionRange(pos, pos);
-      } else if (caretState[1] >= caretState[2]) {
-        selection.setSelectionRange(pos, pos);
-      } else if (caretState[1] < caretState[2]) {
-        selection.setSelectionRange(pos + 1, pos + 1);
+  function getCaretPosition(selection) {
+    if (selection.selectionStart) {
+      var pos = 0,
+          selectStart = selection.selectionStart;
+      if (selectStart || selectStart === 0) {
+        pos = selectStart;
       }
-    };
+      return pos;
+    }
+  }
+
+  function setCaretPosition(selection, pos) {
+    if (selection.setSelectionRange) {
+      selection.focus();
+      selection.setSelectionRange(pos, pos);
+    }
   }
 
   // utils
