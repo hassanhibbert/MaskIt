@@ -103,7 +103,6 @@
           // add mask item
           !isItemDuplicate && valueParts.splice(index, 0, maskItem);
           this.updateCaret = true;
-          //console.log('caret + 1')
         }
       }
 
