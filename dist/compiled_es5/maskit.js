@@ -27,7 +27,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     this.maskValue = '';
     this.maskPattern = maskPattern.split('');
     this.maskElement = !isObject(options[0]) && getElementList(options[0]);
-    this.caretState = {};
 
     this.events = {
       onChangeHandler: _onChangeHandler.bind(_this),
@@ -59,7 +58,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     if (this.maskElement) {
       for (var i = 0, length = this.maskElement.length; i < length; i += 1) {
         this.maskElement[i].value = this.mask(this.maskElement[i].value);
-        this.caretState[i] = new Array(3);
       }
       initializeEvents.call(this);
     }
