@@ -27,7 +27,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     this.maskValue = '';
     this.maskPattern = maskPattern.split('');
     this.maskElement = !isObject(options[0]) && getElementList(options[0]);
-    this.updateCaret = false;
 
     this.events = {
       onChangeHandler: _onChangeHandler.bind(_this),
@@ -90,7 +89,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
           // add mask item
           !isItemDuplicate && valueParts.splice(index, 0, maskItem);
-          //console.log('caret + 1')
         } else if (valueParts[index] && maskDefinition[maskItem] && !maskDefinition[maskItem].pattern.test(valueParts[index])) {
           message = 'The character ' + valueParts[index] + ' does not match this pattern: ' + maskDefinition[maskItem].pattern;
 
@@ -108,7 +106,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
           // add mask item
           !isItemDuplicate && valueParts.splice(index, 0, maskItem);
-          this.updateCaret = true;
         }
       }
 
@@ -176,9 +173,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       // Update caret position
       lengthAfter = event.target.value.length;
-      caretPosition = lengthBefore < lengthAfter && this.updateCaret ? caretPositionBefore + 1 : caretPositionBefore;
+      caretPosition = lengthBefore < lengthAfter ? caretPositionBefore + 1 : caretPositionBefore;
       setCaretPosition(event.target, caretPosition);
-      this.updateCaret = false;
     }
   }
 
