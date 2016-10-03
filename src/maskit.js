@@ -169,7 +169,9 @@
 
       // Update caret position
       lengthAfter = event.target.value.length;
-      caretPosition = lengthBefore < lengthAfter ? caretPositionBefore + 1 : caretPositionBefore;
+      caretPosition = lengthBefore < lengthAfter && event.target.value.charAt(caretPositionBefore + 1).trim() === ''
+        ? caretPositionBefore + 1
+        : caretPositionBefore;
       setCaretPosition(event.target, caretPosition);
     }
   }
