@@ -1,6 +1,5 @@
-# MaskIt
+# MaskIt [![Build Status](https://travis-ci.org/hassanhibbert/MaskIt.svg?branch=master)](https://travis-ci.org/hassanhibbert/MaskIt)
 
-[![Build Status](https://travis-ci.org/hassanhibbert/MaskIt.svg?branch=master)](https://travis-ci.org/hassanhibbert/MaskIt)
 
 A JavaScript tool to apply a predefined mask to an input field.
 
