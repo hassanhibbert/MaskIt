@@ -1,7 +1,7 @@
 {
   "name": "mask-it",
   "description": "A javascript masking tool",
-  "main": "MaskIt.js",
+  "main": "dist/compiled_es5/maskit.js",
   "authors": [
     "Hassan Hibbert <hassanhibbert@yahoo.com> (http://hassanhibbert.com)"
   ],
