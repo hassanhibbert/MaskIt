@@ -71,7 +71,9 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
       //'PhantomJS',
-      'Chrome'
+      'Chrome',
+      'ChromeHeadless',
+      'MyHeadlessChrome'
     ],
 
 
@@ -83,13 +85,14 @@ module.exports = function(config) {
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
-    // customLaunchers: {
-    //   Chrome_travis_ci: {
-    //     base: 'Chrome',
-    //     flags: ['--no-sandbox']
-    //   }
-    // }
-  };
+    customLaunchers: {
+      MyHeadlessChrome: {
+        base: 'ChromeHeadless',
+        flags: ['--disable-translate', '--disable-extensions', '--remote-debugging-port=9223']
+      }
+    }
+
+    };
 
   // if (process.env.TRAVIS) {
   //   configuration.browsers = ['Chrome_travis_ci'];
