@@ -2,7 +2,8 @@
 // Generated on Thu Sep 29 2016 21:27:35 GMT-0400 (Eastern Daylight Time)
 
 module.exports = function(config) {
-  config.set({
+
+  var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: './',
@@ -15,8 +16,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      './test/*.spec.js',
-      './dist/maskit.min.js'
+      './dist/maskit.min.js',
+      './test/*.spec.js'
     ],
 
 
@@ -27,7 +28,8 @@ module.exports = function(config) {
     plugins: [
       'karma-jasmine',
       'karma-junit-reporter',
-      'karma-phantomjs-launcher'
+      'karma-phantomjs-launcher',
+      'karma-chrome-launcher'
     ],
 
     phantomjsLauncher: {
@@ -67,7 +69,10 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: [
+      //'PhantomJS',
+      'Chrome'
+    ],
 
 
     // Continuous Integration mode
@@ -76,6 +81,19 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
-  })
+    concurrency: Infinity,
+
+    customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    }
+  };
+
+  if (process.env.TRAVIS) {
+    configuration.browsers = ['Chrome_travis_ci'];
+  }
+
+  config.set(configuration);
 };

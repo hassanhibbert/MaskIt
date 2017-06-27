@@ -16,22 +16,36 @@
     <input type="text" id="phone" placeholder="Enter Phone Number"/>
 </div>
 
-<script src="maskit.min.js"></script>
+<script src="../src/maskit.js"></script>
 <script>
 
+//return
     // with callback options
-    MaskIt('00/00/0000', '.date', {
-        onComplete: function(value) {
-            console.log('complete: ', value);
+    const dateMask = new MaskIt('00/00/0000', {
+        element: '.date',
+        onComplete: function(data) {
+            console.log('complete: ', data);
+        },
+        onInvalidCharacter: function (data) {
+          console.log(data);
         }
     });
 
+
     // basic usage
-    MaskIt('00:00:00', '#time');
-    MaskIt('(000) 000-0000', '#phone');
+    new MaskIt('00.00:00', { element: '#time' });
+    new MaskIt('(000) 000-0000', { element: '#phone'});
 
     // using mask method
-    console.log(MaskIt('00/00/0000').mask('05231995'));
+    console.log(new MaskIt('00/00/0000').mask('12/34/56/78/90'));
+
+
+    setTimeout(() => {
+      //console.log('events destroyed');
+      //timeMask.destroy();
+      //dateMask.destroy();
+    }, 5000);
+
 </script>
 </body>
 </html>
