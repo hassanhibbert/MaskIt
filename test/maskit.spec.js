@@ -1,7 +1,7 @@
+
 describe('Setup MaskIt', function () {
-  it('should initialize a function', function () {
-    expect(typeof MaskIt).toBe('function');
-    expect(typeof MaskIt('')).toBe('object');
+  it('should initialize a object', function () {
+    expect(typeof new MaskIt('')).toBe('object');
   });
 });
 
@@ -9,27 +9,27 @@ describe('Basic masks', function () {
   var simpleMask;
 
   it('should only return numbers', function () {
-    simpleMask = MaskIt('0000');
+    simpleMask = new MaskIt('0000');
     expect(simpleMask.mask('1234')).toBe('1234');
     expect(simpleMask.mask('1e3jhhh4iopph')).toBe('134');
     expect(simpleMask.mask('12*45')).toBe('1245');
   });
 
   it('should update mask pattern on-the-fly', function () {
-    simpleMask = MaskIt('000000');
+    simpleMask = new MaskIt('000000');
     expect(simpleMask.mask('123456')).toBe('123456');
     expect(simpleMask.mask('123abc7')).toBe('1237');
     expect(simpleMask.mask('12_345a67')).toBe('123456');
 
     // update on the fly
-    simpleMask = MaskIt('000.000');
+    simpleMask = new MaskIt('000.000');
     expect(simpleMask.mask('123')).toBe('123.');
     expect(simpleMask.mask('123abc7')).toBe('123.7');
     expect(simpleMask.mask('12_245a67')).toBe('122.456');
   });
 
   it('should format normally when input is the same as mask characters', function () {
-    simpleMask = MaskIt('00.00.000');
+    simpleMask = new MaskIt('00.00.000');
     expect(simpleMask.mask('00')).toBe('00.');
     expect(simpleMask.mask('00.00')).toBe('00.00.');
     expect(simpleMask.mask('00.00.000')).toBe('00.00.000');
@@ -41,7 +41,7 @@ describe('Basic masks', function () {
 describe('Masks with special characters', function () {
 
   it('should format numbers with phone mask', function () {
-    var phoneMask = MaskIt('(000) 000-0000');
+    var phoneMask = new MaskIt('(000) 000-0000');
     expect(phoneMask.mask('1')).toBe('(1');
     expect(phoneMask.mask('12')).toBe('(12');
     expect(phoneMask.mask('123')).toBe('(123) ');
@@ -55,7 +55,7 @@ describe('Masks with special characters', function () {
   });
 
   it('should format special characters with phone mask', function() {
-    var phoneMask = MaskIt('(000) 000-0000');
+    var phoneMask = new MaskIt('(000) 000-0000');
     expect(phoneMask.mask('(1')).toBe('(1');
     expect(phoneMask.mask('(123)')).toBe('(123) ');
     expect(phoneMask.mask('(123) 4567')).toBe('(123) 456-7');
@@ -64,7 +64,7 @@ describe('Masks with special characters', function () {
   });
 
   it('should format numbers with date mask', function() {
-    var dateMask = MaskIt('00/00/0000');
+    var dateMask = new MaskIt('00/00/0000');
     expect(dateMask.mask('0')).toBe('0');
     expect(dateMask.mask('12')).toBe('12/');
     expect(dateMask.mask('12345678')).toBe('12/34/5678');
@@ -73,12 +73,12 @@ describe('Masks with special characters', function () {
   });
 
   it('should format mixed characters and numbers with mask', function() {
-    var mixMask = MaskIt('AA-00-A0A0.00');
+    var mixMask = new MaskIt('AA-00-A0A0.00');
     expect(mixMask.mask('ab')).toBe('ab-');
     expect(mixMask.mask('abcdef')).toBe('ab-');
     expect(mixMask.mask('ab09')).toBe('ab-09-');
     expect(mixMask.mask('ab09kk0')).toBe('ab-09-k0');
-    expect(mixMask.mask('ab09kk0a433')).toBe('ab-09-k0a4.33');
+    expect(mixMask.mask('ab09k0a433')).toBe('ab-09-k0a4.33');
   });
 });
 
@@ -86,7 +86,7 @@ describe('Mask option', function () {
 
   it('mask definition should mask a value like normal with a custom mask character', function() {
 
-    var customMask = MaskIt('$$/$$/$$$$', {
+    var customMask = new MaskIt('$$/$$/$$$$', {
       maskDefinitions: {
         '$': { pattern: /\d/ }
       }
@@ -101,16 +101,17 @@ describe('Mask option', function () {
 
   var dateMask, completedValue, error = [];
   beforeEach(function() {
-    dateMask = MaskIt('00/00/0000', {
+    dateMask = new MaskIt('00/00/0000', {
       onComplete: function (value) {
         completedValue = value;
       },
-      onInvalidHandler: function (errorMessage, incorrectValue) {
-        error.push(incorrectValue);
+      onInvalidCharacter: function (data) {
+        console.count('called')
+        error.push(data.invalidCharacter);
       }
     });
     spyOn(dateMask.options, 'onComplete').and.callThrough();
-    spyOn(dateMask.options, 'onInvalidHandler').and.callThrough();
+    spyOn(dateMask.options, 'onInvalidCharacter').and.callThrough();
     dateMask.mask('12345678');
     dateMask.mask('1a3r567');
   });
@@ -124,11 +125,11 @@ describe('Mask option', function () {
   });
 
   it("callback onComplete value should be 12/34/5678", function() {
-    expect(completedValue).toEqual('12/34/5678');
+    expect(completedValue).toEqual({ complete: '12/34/5678' });
   });
 
   it("callback onInvalidHandler should be called 2 times", function() {
-    expect(dateMask.options.onInvalidHandler).toHaveBeenCalledTimes(2);
+    expect(dateMask.options.onInvalidCharacter).toHaveBeenCalledTimes(2);
   });
 
   it("callback onInvalidHandler caught errors should be 'a' and 'r' ", function() {
