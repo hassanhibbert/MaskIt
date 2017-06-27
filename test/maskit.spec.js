@@ -2,6 +2,7 @@
 describe('Setup MaskIt', function () {
   it('should initialize a object', function () {
     expect(typeof new MaskIt('')).toBe('object');
+    
   });
 });
 
