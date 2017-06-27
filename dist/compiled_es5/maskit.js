@@ -137,7 +137,6 @@ var MaskIt = function () {
     value: function onInputHandler(event) {
       var output = this.maskInput(event.target);
       if (this.options.onInputHandler) {
-
         this.options.onInputHandler({ output: output, event: event });
       }
     }
@@ -251,7 +250,7 @@ var MaskIt = function () {
       var inputLength = input.value.length;
       var maskLength = maskOutput.length;
       var newPosition = this.calculateCursorPosition(cursorPosition, inputLength, maskLength);
-      if (!inputLength) return;
+      if (!inputLength) return '';
       input.value = maskOutput;
       Utils.setCursorPosition(input, newPosition);
       return maskOutput;
