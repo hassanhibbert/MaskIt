@@ -20,31 +20,18 @@
 <script>
 
     // with callback options
-    const dateMask = new MaskIt('00/00/0000', {
-        element: '.date',
-        onComplete: function(data) {
-            console.log('complete: ', data);
-        },
-        onInvalidCharacter: function (data) {
-          console.log(data);
+    MaskIt('00/00/0000', '.date', {
+        onComplete: function(value) {
+            console.log('complete: ', value);
         }
     });
 
-
     // basic usage
-    new MaskIt('00:00:00', { element: '#time' });
-    new MaskIt('(000) 000-0000', { element: '#phone'});
+    MaskIt('00:00:00', '#time');
+    MaskIt('(000) 000-0000', '#phone');
 
     // using mask method
-    console.log(new MaskIt('00/00/0000').mask('12/34/56/78/90'));
-
-
-    setTimeout(() => {
-      //console.log('events destroyed');
-      //timeMask.destroy();
-      //dateMask.destroy();
-    }, 5000);
-
+    console.log(MaskIt('00/00/0000').mask('05231995'));
 </script>
 </body>
 </html>

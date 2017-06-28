@@ -2,8 +2,7 @@
 // Generated on Thu Sep 29 2016 21:27:35 GMT-0400 (Eastern Daylight Time)
 
 module.exports = function(config) {
-
-  var configuration = {
+  config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: './',
@@ -16,8 +15,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      './dist/compiled_es5/maskit.js',
-      './test/*.spec.js'
+      './test/*.spec.js',
+      './dist/maskit.min.js'
     ],
 
 
@@ -28,8 +27,7 @@ module.exports = function(config) {
     plugins: [
       'karma-jasmine',
       'karma-junit-reporter',
-      'karma-phantomjs-launcher',
-      'karma-chrome-launcher'
+      'karma-phantomjs-launcher'
     ],
 
     phantomjsLauncher: {
@@ -69,12 +67,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [
-      //'PhantomJS',
-      'Chrome',
-      'ChromeHeadless',
-      'MyHeadlessChrome'
-    ],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode
@@ -83,20 +76,6 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity,
-
-    customLaunchers: {
-      MyHeadlessChrome: {
-        base: 'ChromeHeadless',
-        flags: ['--disable-translate', '--disable-extensions', '--remote-debugging-port=9223']
-      }
-    }
-
-    };
-
-  // if (process.env.TRAVIS) {
-  //   configuration.browsers = ['Chrome_travis_ci'];
-  // }
-
-  config.set(configuration);
+    concurrency: Infinity
+  })
 };
