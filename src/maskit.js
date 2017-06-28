@@ -1,7 +1,7 @@
 /*
  * MaskIt: A JavaScript masking tool
  * By Hassan Hibbert <http://hassanhibbert.com/>
- * Copyright 2016 Hassan Hibbert, under the MIT License
+ * Copyright 2016 - 2017 Hassan Hibbert, under the MIT License
  * <https://opensource.org/licenses/mit-license.php/>
  */
 
