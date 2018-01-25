@@ -41,7 +41,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
     defaults = {
       maskOnInput: true,
-      maskOnChange: false,
+      maskOnChange: true,
       onInvalidHandler: null,
       onInputHandler: null,
       onChangeHandler: null,
@@ -149,28 +149,29 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
   function _onChangeHandler(event) {
     event.preventDefault();
-    var maskedValue = this.mask(event.target.value);
-    isFunction(this.options.onChangeHandler) && this.options.onChangeHandler.call(null, event.target, maskedValue);
-    event.target.value = maskedValue;
+    maskAndUpdateCaret.call(this, event.target, this.options.onChangeHandler);
   }
 
   function _onInputHandler(event) {
     event.preventDefault();
+    maskAndUpdateCaret.call(this, event.target, this.options.onInputHandler);
+  }
 
+  function maskAndUpdateCaret(element, callback) {
     // Info before caret position is changed
-    var lengthBefore = this.maskValue.length,
-        caretPositionBefore = getCaretPosition(event.target),
-        lengthAfter,
-        caretPosition;
+    var lengthBefore = this.maskValue.length;
+    var caretPositionBefore = getCaretPosition(element);
+    var lengthAfter = void 0,
+        caretPosition = void 0;
 
     var maskedValue = this.mask(event.target.value);
-    isFunction(this.options.onInputHandler) && this.options.onInputHandler.call(null, event.target, maskedValue);
-    event.target.value = maskedValue;
+    isFunction(callback) && callback.call(null, element, maskedValue);
+    element.value = maskedValue;
 
     // Update caret position
-    lengthAfter = event.target.value.length;
-    caretPosition = lengthBefore < lengthAfter && event.target.value.charAt(caretPositionBefore + 1).trim() === '' ? caretPositionBefore + 1 : caretPositionBefore;
-    setCaretPosition(event.target, caretPosition);
+    lengthAfter = element.value.length;
+    caretPosition = lengthBefore < lengthAfter && element.value.charAt(caretPositionBefore + 1).trim() === '' ? caretPositionBefore + 1 : caretPositionBefore;
+    setCaretPosition(element, caretPosition);
   }
 
   function getCaretPosition(selection) {

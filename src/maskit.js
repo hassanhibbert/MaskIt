@@ -33,7 +33,7 @@
 
     defaults = {
       maskOnInput: true,
-      maskOnChange: false,
+      maskOnChange: true,
       onInvalidHandler: null,
       onInputHandler: null,
       onChangeHandler: null,
@@ -145,29 +145,30 @@
 
   function _onChangeHandler(event) {
     event.preventDefault();
-    const maskedValue = this.mask(event.target.value);
-    isFunction(this.options.onChangeHandler) && this.options.onChangeHandler.call(null, event.target, maskedValue);
-    event.target.value = maskedValue;
+    maskAndUpdateCaret.call(this, event.target, this.options.onChangeHandler);
   }
 
   function _onInputHandler(event) {
     event.preventDefault();
+    maskAndUpdateCaret.call(this, event.target, this.options.onInputHandler);
+  }
 
+  function maskAndUpdateCaret(element, callback) {
     // Info before caret position is changed
-    var lengthBefore = this.maskValue.length,
-        caretPositionBefore = getCaretPosition(event.target),
-        lengthAfter, caretPosition;
+    let lengthBefore = this.maskValue.length;
+    let caretPositionBefore = getCaretPosition(element);
+    let lengthAfter, caretPosition;
 
     const maskedValue = this.mask(event.target.value);
-    isFunction(this.options.onInputHandler) && this.options.onInputHandler.call(null, event.target, maskedValue);
-    event.target.value = maskedValue;
+    isFunction(callback) && callback.call(null, element, maskedValue);
+    element.value = maskedValue;
 
     // Update caret position
-    lengthAfter = event.target.value.length;
-    caretPosition = lengthBefore < lengthAfter && event.target.value.charAt(caretPositionBefore + 1).trim() === ''
+    lengthAfter = element.value.length;
+    caretPosition = lengthBefore < lengthAfter && element.value.charAt(caretPositionBefore + 1).trim() === ''
       ? caretPositionBefore + 1
       : caretPositionBefore;
-    setCaretPosition(event.target, caretPosition);
+    setCaretPosition(element, caretPosition);
   }
 
   function getCaretPosition(selection) {
