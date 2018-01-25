@@ -145,13 +145,9 @@
 
   function _onChangeHandler(event) {
     event.preventDefault();
-
-    if (this.options.onChangeHandler) {
-      this.options.onChangeHandler.call(null, event.target, this.mask(event.target.value));
-    } else {
-      event.target.value = this.mask(event.target.value);
-    }
-
+    const maskedValue = this.mask(event.target.value);
+    isFunction(this.options.onChangeHandler) && this.options.onChangeHandler.call(null, event.target, maskedValue);
+    event.target.value = maskedValue;
   }
 
   function _onInputHandler(event) {
@@ -162,18 +158,16 @@
         caretPositionBefore = getCaretPosition(event.target),
         lengthAfter, caretPosition;
 
-    if (this.options.onInputHandler) {
-      this.options.onInputHandler.call(null, event.target, this.mask(event.target.value));
-    } else {
-      event.target.value = this.mask(event.target.value);
+    const maskedValue = this.mask(event.target.value);
+    isFunction(this.options.onInputHandler) && this.options.onInputHandler.call(null, event.target, maskedValue);
+    event.target.value = maskedValue;
 
-      // Update caret position
-      lengthAfter = event.target.value.length;
-      caretPosition = lengthBefore < lengthAfter && event.target.value.charAt(caretPositionBefore + 1).trim() === ''
-        ? caretPositionBefore + 1
-        : caretPositionBefore;
-      setCaretPosition(event.target, caretPosition);
-    }
+    // Update caret position
+    lengthAfter = event.target.value.length;
+    caretPosition = lengthBefore < lengthAfter && event.target.value.charAt(caretPositionBefore + 1).trim() === ''
+      ? caretPositionBefore + 1
+      : caretPositionBefore;
+    setCaretPosition(event.target, caretPosition);
   }
 
   function getCaretPosition(selection) {

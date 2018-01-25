@@ -5,7 +5,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 /*
  * MaskIt: A JavaScript masking tool
  * By Hassan Hibbert <http://hassanhibbert.com/>
- * Copyright 2016 Hassan Hibbert, under the MIT License
+ * Copyright 2016 - 2017 Hassan Hibbert, under the MIT License
  * <https://opensource.org/licenses/mit-license.php/>
  */
 
@@ -149,12 +149,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
   function _onChangeHandler(event) {
     event.preventDefault();
-
-    if (this.options.onChangeHandler) {
-      this.options.onChangeHandler.call(null, event.target, this.mask(event.target.value));
-    } else {
-      event.target.value = this.mask(event.target.value);
-    }
+    var maskedValue = this.mask(event.target.value);
+    isFunction(this.options.onChangeHandler) && this.options.onChangeHandler.call(null, event.target, maskedValue);
+    event.target.value = maskedValue;
   }
 
   function _onInputHandler(event) {
@@ -166,16 +163,14 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         lengthAfter,
         caretPosition;
 
-    if (this.options.onInputHandler) {
-      this.options.onInputHandler.call(null, event.target, this.mask(event.target.value));
-    } else {
-      event.target.value = this.mask(event.target.value);
+    var maskedValue = this.mask(event.target.value);
+    isFunction(this.options.onInputHandler) && this.options.onInputHandler.call(null, event.target, maskedValue);
+    event.target.value = maskedValue;
 
-      // Update caret position
-      lengthAfter = event.target.value.length;
-      caretPosition = lengthBefore < lengthAfter && event.target.value.charAt(caretPositionBefore + 1).trim() === '' ? caretPositionBefore + 1 : caretPositionBefore;
-      setCaretPosition(event.target, caretPosition);
-    }
+    // Update caret position
+    lengthAfter = event.target.value.length;
+    caretPosition = lengthBefore < lengthAfter && event.target.value.charAt(caretPositionBefore + 1).trim() === '' ? caretPositionBefore + 1 : caretPositionBefore;
+    setCaretPosition(event.target, caretPosition);
   }
 
   function getCaretPosition(selection) {
