@@ -1,7 +1,7 @@
 describe('Setup MaskIt', function () {
   it('should initialize a function', function () {
-    //expect(typeof MaskIt).toBe('function');
-    //expect(typeof MaskIt('')).toBe('object');
+    expect(typeof MaskIt).toBe('function');
+    expect(typeof MaskIt('')).toBe('object');
   });
 });
 
@@ -38,7 +38,7 @@ describe('Basic masks', function () {
 
 });
 
-describe('Masks with special characters', function () {
+describe('MaskIt().mask(): Input values with special characters', function () {
 
   it('should format numbers with phone mask', function () {
     var phoneMask = MaskIt('(000) 000-0000');
@@ -82,11 +82,11 @@ describe('Masks with special characters', function () {
   });
 });
 
-describe('Mask option', function () {
+describe('Mask({options})', function () {
 
-  it('mask definition should mask a value like normal with a custom mask character', function() {
+  it('should mask a value with custom mask characters', function() {
 
-    var customMask = MaskIt('$$/$$/$$$$', {
+    var customMask = MaskIt('$$/$$/$$$$', '', {
       maskDefinitions: {
         '$': { pattern: /\d/ }
       }
@@ -101,7 +101,7 @@ describe('Mask option', function () {
 
   var dateMask, completedValue, error = [];
   beforeEach(function() {
-    dateMask = MaskIt('00/00/0000', {
+    dateMask = MaskIt('00/00/0000', '', {
       onComplete: function (value) {
         completedValue = value;
       },
@@ -115,19 +115,19 @@ describe('Mask option', function () {
     dateMask.mask('1a3r567');
   });
 
-  it("callback onComplete should be called", function() {
+  it("onComplete() should be called", function() {
     expect(dateMask.options.onComplete).toHaveBeenCalled();
   });
 
-  it("callback onComplete should be called 1 time", function() {
+  it("onComplete() should be called 1 time", function() {
     expect(dateMask.options.onComplete).toHaveBeenCalledTimes(1);
   });
 
-  it("callback onComplete value should be 12/34/5678", function() {
+  it("onComplete() value should be 12/34/5678", function() {
     expect(completedValue).toEqual('12/34/5678');
   });
 
-  it("callback onInvalidHandler should be called 2 times", function() {
+  it("onInvalidHandler() should be called 2 times", function() {
     expect(dateMask.options.onInvalidHandler).toHaveBeenCalledTimes(2);
   });
 
