@@ -136,3 +136,13 @@ describe('Mask({options})', function () {
     expect(error[1]).toEqual('r');
   });
 });
+
+describe('MaskIt() Dom element', function () {
+  var inputs = [];
+  beforeEach(function () {
+    inputs = fixture.set('<input id="firstName" name="firstName" value="Hello World">');
+  });
+  it('should do something', function () {
+    expect(inputs[0].value).toBe('Hello World');
+  });
+});
