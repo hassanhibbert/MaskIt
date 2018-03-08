@@ -46,6 +46,7 @@ MaskIt('00/00/0000', dateInput);
 ```
 
 Using different listeners. Default: `maskOnInput = true`
+> DEPRECATED: Options to mask element on-input and on-change events
 
 ```javascript
 MaskIt('(000) 000-0000', '#phone', {
@@ -59,7 +60,7 @@ Using callbacks
 ```javascript
 MaskIt('00:00:00', '#time', {
 
-  onInvalidHandler: function(errorMessage, incorrectValue, maskPattern) {
+  onInvalidHandler: function(errorMessage, incorrectValue) {
     console.log(errorMessage);
   },
   
