@@ -6,7 +6,3 @@ node_js:
 before_script:
   - npm install
 script: npm run test:single
-dist: trusty
-before_install:
-  - # start your web application and listen on `localhost`
-  - google-chrome-stable --headless
