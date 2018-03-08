@@ -27,7 +27,7 @@
     "preserve": "npm run build",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
-    "test-single-run": "karma start karma.conf.js --single-run",
+    "test:single": "karma start karma.conf.js --single-run",
     "test-auto-watch": "karma start karma.conf.js --auto-watch"
   },
   "repository": {
@@ -41,6 +41,7 @@
   },
   "homepage": "https://github.com/hassanhibbert/MaskIt#readme",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "karma-es6-shim": "^1.0.0"
   }
 }

@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       './test/*.spec.js',
-      './dist/maskit.min.js'
+      './dist/compiled_es5/maskit.js'
     ],
 
 
