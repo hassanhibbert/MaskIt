@@ -68,9 +68,10 @@
 
     ctx.maskPatterns = [...maskPattern];
 
-    // Initialize dom if a selector/HTMLElement is available
-    ctx.elements = selector && ctx.getElementList(selector);
-    ctx.elements && ctx.initializeEvents();
+    if (selector) {
+      ctx.elements = ctx.getElementList(selector);
+      ctx.elements.length && ctx.initializeEvents();
+    }
 
     return ctx;
   }

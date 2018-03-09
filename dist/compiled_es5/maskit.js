@@ -72,9 +72,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
     ctx.maskPatterns = [].concat(_toConsumableArray(maskPattern));
 
-    // Initialize dom if a selector/HTMLElement is available
-    ctx.elements = selector && ctx.getElementList(selector);
-    ctx.elements && ctx.initializeEvents();
+    if (selector) {
+      ctx.elements = ctx.getElementList(selector);
+      ctx.elements.length && ctx.initializeEvents();
+    }
 
     return ctx;
   }
