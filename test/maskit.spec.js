@@ -137,6 +137,7 @@ describe('Mask({options})', function () {
   });
 });
 
+// TODO: setup dom testing
 describe('MaskIt() Dom element', function () {
   var inputs = [];
   beforeEach(function () {
