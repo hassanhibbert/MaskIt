@@ -85,9 +85,7 @@
   const Helpers = {
 
     getCursorPosition(selection) {
-      let position = 0;
-      const selectStart = selection.selectionStart;
-      return selectStart ? selectStart : position;
+      return selection.selectionEnd;
     },
 
     setCursorPosition(selection, position) {

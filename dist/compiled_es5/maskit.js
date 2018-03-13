@@ -90,9 +90,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
    */
   var Helpers = {
     getCursorPosition: function getCursorPosition(selection) {
-      var position = 0;
-      var selectStart = selection.selectionStart;
-      return selectStart ? selectStart : position;
+      return selection.selectionEnd;
     },
     setCursorPosition: function setCursorPosition(selection, position) {
       if (selection.setSelectionRange) {
