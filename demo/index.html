@@ -21,7 +21,7 @@
 
     // with callback options
     MaskIt('00/00/0000', '.date', {
-        onComplete: function(value) {
+        onComplete: function(element, value) {
             console.log('complete: ', value);
         }
     });

@@ -147,7 +147,7 @@
 
     maskInput(element) {
       const input = element;
-      const maskOutput = this.mask(input.value);
+      const maskOutput = this.mask(input.value, element);
       const cursorPosition = this.getCursorPosition(input);
       const inputLength = input.value.length;
       const maskLength = maskOutput.length;
@@ -213,7 +213,7 @@
   });
 
   const PublicAPI = Extend(MaskEvents, {
-    mask(string = '') {
+    mask(string = '', element) {
       const patternMappedToMask = this.mapPatternToMaskDefinitions(this.maskPatterns);
       const unmaskedCharacters = [...this.unmask(string)];
       const mask = [];
@@ -237,7 +237,7 @@
       }
 
       const maskOutput = mask.join('');
-      this.isMaskComplete(maskOutput) && this.options.onComplete(maskOutput);
+      this.isMaskComplete(maskOutput) && this.options.onComplete(element, maskOutput);
 
       return maskOutput;
     },

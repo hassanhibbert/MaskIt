@@ -148,7 +148,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     },
     maskInput: function maskInput(element) {
       var input = element;
-      var maskOutput = this.mask(input.value);
+      var maskOutput = this.mask(input.value, element);
       var cursorPosition = this.getCursorPosition(input);
       var inputLength = input.value.length;
       var maskLength = maskOutput.length;
@@ -215,6 +215,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   var PublicAPI = Extend(MaskEvents, {
     mask: function mask() {
       var string = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+      var element = arguments[1];
 
       var patternMappedToMask = this.mapPatternToMaskDefinitions(this.maskPatterns);
       var unmaskedCharacters = [].concat(_toConsumableArray(this.unmask(string)));
@@ -239,7 +240,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
 
       var maskOutput = mask.join('');
-      this.isMaskComplete(maskOutput) && this.options.onComplete(maskOutput);
+      this.isMaskComplete(maskOutput) && this.options.onComplete(element, maskOutput);
 
       return maskOutput;
     },

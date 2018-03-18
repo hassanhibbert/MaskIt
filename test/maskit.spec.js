@@ -102,7 +102,7 @@ describe('Mask({options})', function () {
   var dateMask, completedValue, error = [];
   beforeEach(function() {
     dateMask = MaskIt('00/00/0000', '', {
-      onComplete: function (value) {
+      onComplete: function (element, value) {
         completedValue = value;
       },
       onInvalidHandler: function (errorMessage, incorrectValue) {

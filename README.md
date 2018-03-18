@@ -73,7 +73,7 @@ MaskIt('00:00:00', '#time', {
     console.log('Change event: ', maskedValue);
   },
   
-  onComplete: function(maskedValue) {
+  onComplete: function(element, maskedValue) {
     console.log('Complete! ', maskedValue);
   }
 });
