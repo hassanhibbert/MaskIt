@@ -221,7 +221,7 @@
       for (let position = 0; position < patternMappedToMask.length; position += 1) {
         const pattern = patternMappedToMask[position];
         const character = unmaskedCharacters[position];
-        const characterRegExp = new RegExp(this.escapeRegExp(pattern), 'g');
+        const characterRegExp = new RegExp(this.escapeRegExp(pattern));
 
         if (characterRegExp.test(character)) {
           mask.push(character);

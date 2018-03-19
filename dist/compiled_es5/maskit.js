@@ -224,7 +224,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       for (var position = 0; position < patternMappedToMask.length; position += 1) {
         var pattern = patternMappedToMask[position];
         var character = unmaskedCharacters[position];
-        var characterRegExp = new RegExp(this.escapeRegExp(pattern), 'g');
+        var characterRegExp = new RegExp(this.escapeRegExp(pattern));
 
         if (characterRegExp.test(character)) {
           mask.push(character);
